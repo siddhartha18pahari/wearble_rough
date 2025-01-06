@@ -1,0 +1,61 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'dart:async';
+import 'package:toastification/toastification.dart';
+
+//Status of BLE Screen
+
+/* 
+- scan devices
+- manages permissions
+- connect, disconnect from devices
+=> next screen: LiveData, start by discovering services
+*/
+
+//* This screen manages scanning, connecting, and disconnecting from BLE devices
+//* it will initiate bluetooth request and verify if the device supports bluetooth
+// (might be redundant with the main.dart>MyApp widget, can refactor later)
+class BleConnection extends StatefulWidget {
+  const BleConnection({super.key});
+
+  @override
+  State<BleConnection> createState() => _BleConnectionState();
+}
+
+class _BleConnectionState extends State<BleConnection> {
+  startBle() async {
+    if (await FlutterBluePlus.isSupported == false) {
+      print("Bluetooth not supported by this device");
+      return;
+    } else {
+      print("Bluetooth is supported by this device");
+    }
+    // handle bluetooth on & off
+    // note: for iOS the initial state is typically BluetoothAdapterState.unknown
+    // note: if you have permissions issues you will get stuck at BluetoothAdapterState.unauthorized
+  }
+
+  @override
+  void initState() {
+    startBle();
+    // first, check if bluetooth is supported by your hardware
+// Note: The platform is initialized on the first call to any FlutterBluePlus method.
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scanning(); // always allow scanning
+    // todo allow for connecting multiple sensors at once
+  }
+}
+
+class Scanning extends StatefulWidget {
+  const Scanning({super.key});
+
+  @override
+  State<Scanning> createState() => _ScanningState();
+}
